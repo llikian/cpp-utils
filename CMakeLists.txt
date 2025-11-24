@@ -2,9 +2,6 @@
 cmake_minimum_required(VERSION 3.26)
 project(cpp-utils)
 
-# Find packages
-
-
 # Compiler options
 set(CMAKE_CXX_STANDARD 23)
 
@@ -19,6 +16,9 @@ set(SOURCES
 
         # Classes
 
+
+        # Template Classes
+        include/HeapArray.hpp
 
         # Other Sources
 

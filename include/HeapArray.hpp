@@ -1,0 +1,217 @@
+/***************************************************************************************************
+ * @file  HeapArray.hpp
+ * @brief Declaration of the HeapArray class
+ **************************************************************************************************/
+
+#pragma once
+
+#include <initializer_list>
+
+/**
+ * @class HeapArray
+ * @brief A minimal dynamic array class that manually manages heap memory for a sequence of `Type`.
+ * @tparam Type The type of the array's data.
+ */
+template <typename Type>
+class HeapArray {
+public:
+    /**
+     * @brief Default constructor. Does not allocate any data.
+     */
+    HeapArray();
+
+    /**
+     * @brief Constructs an array with a given size. Elements are default-initialized (Type()).
+     * @param size The number of elements.
+     */
+    explicit HeapArray(std::size_t size);
+
+    /**
+    * @brief Constructs an array with a given size. Elements are initialized with a specified value.
+     * @param size The number of elements.
+     * @param default_value The value to fill the array with.
+     */
+    HeapArray(std::size_t size, Type default_value);
+
+    /**
+     * @brief Constructs an array from an initializer_list.
+     * @param values The values to fill the array with.
+     */
+    HeapArray(const std::initializer_list<Type>& values);
+
+    /**
+     * @brief Copy constructor. Performs a deep copy.
+     * @param other The array to copy.
+     */
+    HeapArray(const HeapArray& other);
+
+    /**
+     * @brief Destructor. Releases allocated memory.
+     */
+    ~HeapArray();
+
+    /**
+     * @brief Copy assignment operator. Performs a deep copy.
+     * @param other The array to copy.
+     * @return A reference to the array.
+     */
+    HeapArray& operator=(const HeapArray& other);
+
+    /**
+     * @brief Access element at `index`.
+     * @param index The index of the wanted element.
+     * @note No bounds checking.
+     * @return A reference to the wanted element.
+     */
+    Type& operator[](std::size_t index);
+
+    /**
+     * @brief Access element at `index`.
+     * @param index The index of the wanted element.
+     * @note No bounds checking.
+     * @return A const-reference to the wanted element.
+     */
+    const Type& operator[](std::size_t index) const;
+
+    /**
+     * @return Current number of elements in the array.
+     */
+    std::size_t get_size() const;
+
+    /**
+     * @return A pointer to the first element in the internal array.
+     * @note Will return nullptr if the array is empty.
+     */
+    Type* get_data();
+
+    /**
+     * @return A const pointer to the first element in the internal array.
+     * @note Will return nullptr if the array is empty.
+     */
+    const Type* get_data() const;
+
+    /**
+     * @brief Resizes the array. If expanded, new elements are default-constructed. If shrunk,
+     * extra elements are discarded.
+     * @param new_size The new size of the array.
+     */
+    void resize(std::size_t new_size);
+
+    /**
+     * @return True if the array has no elements.
+     */
+    bool empty() const;
+
+    /**
+     * @return An iterator to the beginning of the array.
+     */
+    Type* begin();
+
+    /**
+     * @return A const iterator to the beginning of the array.
+     */
+    const Type* begin() const;
+
+    /**
+     * @return An iterator to the element past the end of the array.
+     */
+    Type* end();
+
+    /**
+     * @return A const iterator to the element past the end of the array.
+     */
+    const Type* end() const;
+
+private:
+    std::size_t size; ///< Number of elements in the array.
+    Type* data;       ///< Pointer to heap-allocated data.
+};
+
+template <typename Type>
+HeapArray<Type>::HeapArray(): size(0), data(nullptr) { }
+
+template <typename Type>
+HeapArray<Type>::HeapArray(std::size_t size): size(size), data(new Type[size]) {
+    Type default_value = Type();
+    for(unsigned int i = 0 ; i < size ; ++i) { data[i] = default_value; }
+}
+
+template <typename Type>
+HeapArray<Type>::HeapArray(std::size_t size, Type default_value): size(size), data(new Type[size]) {
+    for(unsigned int i = 0 ; i < size ; ++i) { data[i] = default_value; }
+}
+
+template <typename Type>
+HeapArray<Type>::HeapArray(const std::initializer_list<Type>& values): size(values.size()), data(new Type[size]) {
+    unsigned int i = 0;
+    for(const Type& value : values) { data[i++] = value; }
+}
+
+template <typename Type>
+HeapArray<Type>::HeapArray(const HeapArray& other): size(other.size), data(new Type[size]) {
+    for(unsigned int i = 0 ; i < size ; ++i) { data[i] = other[i]; }
+}
+
+template <typename Type>
+HeapArray<Type>::~HeapArray() {
+    delete[] data;
+}
+
+template <typename Type>
+HeapArray<Type>& HeapArray<Type>::operator=(const HeapArray& other) {
+    if(this == &other) { return *this; }
+
+    delete[] data;
+
+    size = other.size;
+    data = new Type[size];
+    for(unsigned int i = 0 ; i < size ; ++i) { data[i] = other[i]; }
+
+    return *this;
+}
+
+template <typename Type>
+Type& HeapArray<Type>::operator[](std::size_t index) { return data[index]; }
+
+template <typename Type>
+const Type& HeapArray<Type>::operator[](std::size_t index) const { return data[index]; }
+
+template <typename Type>
+std::size_t HeapArray<Type>::get_size() const { return size; }
+
+template <typename Type>
+Type* HeapArray<Type>::get_data() { return data; }
+
+template <typename Type>
+const Type* HeapArray<Type>::get_data() const { return data; }
+
+template <typename Type>
+void HeapArray<Type>::resize(std::size_t new_size) {
+    if(new_size > 0) {
+        Type* temp = data;
+        data = new Type[new_size];
+        Type default_value = Type();
+        for(unsigned int i = 0 ; i < new_size ; ++i) { data[i] = i < size ? temp[i] : default_value; }
+        size = new_size;
+        delete[] temp;
+    } else {
+        delete[] data;
+        size = 0;
+        data = nullptr;
+    }
+}
+
+template <typename Type>
+bool HeapArray<Type>::empty() const { return size == 0; }
+
+template <typename Type>
+Type* HeapArray<Type>::begin() { return data; }
+
+template <typename Type>
+const Type* HeapArray<Type>::begin() const { return data; }
+
+template <typename Type>
+Type* HeapArray<Type>::end() { return data + size; }
+
+template <typename Type>
+const Type* HeapArray<Type>::end() const { return data + size; }
