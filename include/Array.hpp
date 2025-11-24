@@ -1,6 +1,6 @@
 /***************************************************************************************************
- * @file  HeapArray.hpp
- * @brief Declaration of the HeapArray class
+ * @file  Array.hpp
+ * @brief Declaration of the Array class
  **************************************************************************************************/
 
 #pragma once
@@ -8,54 +8,54 @@
 #include <initializer_list>
 
 /**
- * @class HeapArray
+ * @class Array
  * @brief A minimal dynamic array class that manually manages heap memory for a sequence of `Type`.
  * @tparam Type The type of the array's data.
  */
 template <typename Type>
-class HeapArray {
+class Array {
 public:
     /**
      * @brief Default constructor. Does not allocate any data.
      */
-    HeapArray();
+    Array();
 
     /**
      * @brief Constructs an array with a given size. Elements are default-initialized (Type()).
      * @param size The number of elements.
      */
-    explicit HeapArray(std::size_t size);
+    explicit Array(std::size_t size);
 
     /**
     * @brief Constructs an array with a given size. Elements are initialized with a specified value.
      * @param size The number of elements.
      * @param default_value The value to fill the array with.
      */
-    HeapArray(std::size_t size, Type default_value);
+    Array(std::size_t size, Type default_value);
 
     /**
      * @brief Constructs an array from an initializer_list.
      * @param values The values to fill the array with.
      */
-    HeapArray(const std::initializer_list<Type>& values);
+    Array(const std::initializer_list<Type>& values);
 
     /**
      * @brief Copy constructor. Performs a deep copy.
      * @param other The array to copy.
      */
-    HeapArray(const HeapArray& other);
+    Array(const Array& other);
 
     /**
      * @brief Destructor. Releases allocated memory.
      */
-    ~HeapArray();
+    ~Array();
 
     /**
      * @brief Copy assignment operator. Performs a deep copy.
      * @param other The array to copy.
      * @return A reference to the array.
      */
-    HeapArray& operator=(const HeapArray& other);
+    Array& operator=(const Array& other);
 
     /**
      * @brief Access element at `index`.
@@ -128,37 +128,37 @@ private:
 };
 
 template <typename Type>
-HeapArray<Type>::HeapArray(): size(0), data(nullptr) { }
+Array<Type>::Array(): size(0), data(nullptr) { }
 
 template <typename Type>
-HeapArray<Type>::HeapArray(std::size_t size): size(size), data(new Type[size]) {
+Array<Type>::Array(std::size_t size): size(size), data(new Type[size]) {
     Type default_value = Type();
     for(unsigned int i = 0 ; i < size ; ++i) { data[i] = default_value; }
 }
 
 template <typename Type>
-HeapArray<Type>::HeapArray(std::size_t size, Type default_value): size(size), data(new Type[size]) {
+Array<Type>::Array(std::size_t size, Type default_value): size(size), data(new Type[size]) {
     for(unsigned int i = 0 ; i < size ; ++i) { data[i] = default_value; }
 }
 
 template <typename Type>
-HeapArray<Type>::HeapArray(const std::initializer_list<Type>& values): size(values.size()), data(new Type[size]) {
+Array<Type>::Array(const std::initializer_list<Type>& values): size(values.size()), data(new Type[size]) {
     unsigned int i = 0;
     for(const Type& value : values) { data[i++] = value; }
 }
 
 template <typename Type>
-HeapArray<Type>::HeapArray(const HeapArray& other): size(other.size), data(new Type[size]) {
+Array<Type>::Array(const Array& other): size(other.size), data(new Type[size]) {
     for(unsigned int i = 0 ; i < size ; ++i) { data[i] = other[i]; }
 }
 
 template <typename Type>
-HeapArray<Type>::~HeapArray() {
+Array<Type>::~Array() {
     delete[] data;
 }
 
 template <typename Type>
-HeapArray<Type>& HeapArray<Type>::operator=(const HeapArray& other) {
+Array<Type>& Array<Type>::operator=(const Array& other) {
     if(this == &other) { return *this; }
 
     delete[] data;
@@ -171,22 +171,22 @@ HeapArray<Type>& HeapArray<Type>::operator=(const HeapArray& other) {
 }
 
 template <typename Type>
-Type& HeapArray<Type>::operator[](std::size_t index) { return data[index]; }
+Type& Array<Type>::operator[](std::size_t index) { return data[index]; }
 
 template <typename Type>
-const Type& HeapArray<Type>::operator[](std::size_t index) const { return data[index]; }
+const Type& Array<Type>::operator[](std::size_t index) const { return data[index]; }
 
 template <typename Type>
-std::size_t HeapArray<Type>::get_size() const { return size; }
+std::size_t Array<Type>::get_size() const { return size; }
 
 template <typename Type>
-Type* HeapArray<Type>::get_data() { return data; }
+Type* Array<Type>::get_data() { return data; }
 
 template <typename Type>
-const Type* HeapArray<Type>::get_data() const { return data; }
+const Type* Array<Type>::get_data() const { return data; }
 
 template <typename Type>
-void HeapArray<Type>::resize(std::size_t new_size) {
+void Array<Type>::resize(std::size_t new_size) {
     if(new_size > 0) {
         Type* temp = data;
         data = new Type[new_size];
@@ -202,16 +202,16 @@ void HeapArray<Type>::resize(std::size_t new_size) {
 }
 
 template <typename Type>
-bool HeapArray<Type>::empty() const { return size == 0; }
+bool Array<Type>::empty() const { return size == 0; }
 
 template <typename Type>
-Type* HeapArray<Type>::begin() { return data; }
+Type* Array<Type>::begin() { return data; }
 
 template <typename Type>
-const Type* HeapArray<Type>::begin() const { return data; }
+const Type* Array<Type>::begin() const { return data; }
 
 template <typename Type>
-Type* HeapArray<Type>::end() { return data + size; }
+Type* Array<Type>::end() { return data + size; }
 
 template <typename Type>
-const Type* HeapArray<Type>::end() const { return data + size; }
+const Type* Array<Type>::end() const { return data + size; }

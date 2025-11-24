@@ -18,7 +18,7 @@ set(SOURCES
 
 
         # Template Classes
-        include/HeapArray.hpp
+        include/Array.hpp
 
         # Other Sources
 
