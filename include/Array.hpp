@@ -6,6 +6,7 @@
 #pragma once
 
 #include <initializer_list>
+#include <iostream>
 
 /**
  * @class Array
@@ -140,6 +141,24 @@ private:
     std::size_t size; ///< Number of elements in the array.
     Type* data;       ///< Pointer to heap-allocated data.
 };
+
+/**
+ * @brief Outputs an array to an output stream.
+ * @param stream The stream to output to.
+ * @param array The array to output.
+ * @return A reference to the stream.
+ */
+template <typename Type>
+std::ostream& operator <<(std::ostream& stream, const Array<Type>& array) {
+    stream << '(';
+    for(const Type& element : array) {
+        stream << element;
+        if(&element < array.end() - 1) { stream << ", "; }
+    }
+    stream << ')';
+
+    return stream;
+}
 
 template <typename Type>
 Array<Type>::Array() : size(0), data(nullptr) { }

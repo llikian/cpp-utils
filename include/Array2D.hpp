@@ -84,6 +84,16 @@ public:
     std::size_t get_width() const;
 
     /**
+     * @return A reference to the internal Array.
+     */
+    Array<Array<Type>>& get_data();
+
+    /**
+     * @return A const-reference to the internal Array.
+     */
+    const Array<Array<Type>>& get_data() const;
+
+    /**
      * @return True if the array has no elements.
      */
     bool empty() const;
@@ -137,6 +147,25 @@ private:
     Array<Array<Type>> data; ///< Pointer to heap-allocated data.
 };
 
+/**
+ * @brief Outputs an array to an output stream.
+ * @param stream The stream to output to.
+ * @param array The array to output.
+ * @return A reference to the stream.
+ */
+template <typename Type>
+std::ostream& operator <<(std::ostream& stream, const Array2D<Type>& array) {
+    stream << '(';
+    for(const Array<Type>& row : array) {
+        if(&row > array.begin()) { stream << ' '; }
+        stream << row;
+        if(&row < array.end() - 1) { stream << ",\n"; }
+    }
+    stream << ')';
+
+    return stream;
+}
+
 template <typename Type>
 Array2D<Type>::Array2D() : height(0), width(0), data() { }
 
@@ -180,6 +209,16 @@ std::size_t Array2D<Type>::get_height() const {
 template <typename Type>
 std::size_t Array2D<Type>::get_width() const {
     return width;
+}
+
+template <typename Type>
+Array<Array<Type>>& Array2D<Type>::get_data() {
+    return data;
+}
+
+template <typename Type>
+const Array<Array<Type>>& Array2D<Type>::get_data() const {
+    return data;
 }
 
 template <typename Type>
