@@ -9,7 +9,7 @@
 
 /**
  * @class Array
- * @brief A minimal dynamic array class that manually manages heap memory for a sequence of `Type`.
+ * @brief A minimal dynamic array class that manually manages heap memory for a sequence of 'Type'.
  * @tparam Type The type of the array's data.
  */
 template <typename Type>
@@ -31,7 +31,7 @@ public:
      * @param size The number of elements.
      * @param default_value The value to fill the array with.
      */
-    Array(std::size_t size, Type default_value);
+    Array(std::size_t size, const Type& default_value);
 
     /**
      * @brief Constructs an array from an initializer_list.
@@ -58,7 +58,7 @@ public:
     Array& operator=(const Array& other);
 
     /**
-     * @brief Access element at `index`.
+     * @brief Access element at 'index'.
      * @param index The index of the wanted element.
      * @note No bounds checking.
      * @return A reference to the wanted element.
@@ -66,7 +66,7 @@ public:
     Type& operator[](std::size_t index);
 
     /**
-     * @brief Access element at `index`.
+     * @brief Access element at 'index'.
      * @param index The index of the wanted element.
      * @note No bounds checking.
      * @return A const-reference to the wanted element.
@@ -89,13 +89,6 @@ public:
      * @note Will return nullptr if the array is empty.
      */
     const Type* get_data() const;
-
-    /**
-     * @brief Resizes the array. If expanded, new elements are default-constructed. If shrunk,
-     * extra elements are discarded.
-     * @param new_size The new size of the array.
-     */
-    void resize(std::size_t new_size);
 
     /**
      * @return True if the array has no elements.
@@ -122,33 +115,58 @@ public:
      */
     const Type* end() const;
 
+    /**
+     * @brief Resizes the array. If expanded, new elements are default-constructed. If shrunk,
+     * extra elements are discarded.
+     * @param new_size The new size of the array.
+     */
+    void resize(std::size_t new_size);
+
+    /**
+     * @brief Fills the array with a value.
+     * @param value The value to fill the array with.
+     */
+    void fill(const Type& value);
+
+    /**
+     * @brief Assigns new content to the array, replacing its contents and modifying its size
+     * accordingly.
+     * @param new_size The new size of the array.
+     * @param value The value to fill the array with.
+     */
+    void assign(std::size_t new_size, const Type& value);
+
 private:
     std::size_t size; ///< Number of elements in the array.
     Type* data;       ///< Pointer to heap-allocated data.
 };
 
 template <typename Type>
-Array<Type>::Array(): size(0), data(nullptr) { }
+Array<Type>::Array() : size(0), data(nullptr) { }
 
 template <typename Type>
-Array<Type>::Array(std::size_t size): size(size), data(new Type[size]) {
+Array<Type>::Array(std::size_t size)
+    : size(size), data(new Type[size]) {
     Type default_value = Type();
     for(unsigned int i = 0 ; i < size ; ++i) { data[i] = default_value; }
 }
 
 template <typename Type>
-Array<Type>::Array(std::size_t size, Type default_value): size(size), data(new Type[size]) {
+Array<Type>::Array(std::size_t size, const Type& default_value)
+    : size(size), data(new Type[size]) {
     for(unsigned int i = 0 ; i < size ; ++i) { data[i] = default_value; }
 }
 
 template <typename Type>
-Array<Type>::Array(const std::initializer_list<Type>& values): size(values.size()), data(new Type[size]) {
+Array<Type>::Array(const std::initializer_list<Type>& values)
+    : size(values.size()), data(new Type[size]) {
     unsigned int i = 0;
     for(const Type& value : values) { data[i++] = value; }
 }
 
 template <typename Type>
-Array<Type>::Array(const Array& other): size(other.size), data(new Type[size]) {
+Array<Type>::Array(const Array& other)
+    : size(other.size), data(new Type[size]) {
     for(unsigned int i = 0 ; i < size ; ++i) { data[i] = other[i]; }
 }
 
@@ -186,7 +204,24 @@ template <typename Type>
 const Type* Array<Type>::get_data() const { return data; }
 
 template <typename Type>
+bool Array<Type>::empty() const { return size == 0; }
+
+template <typename Type>
+Type* Array<Type>::begin() { return data; }
+
+template <typename Type>
+const Type* Array<Type>::begin() const { return data; }
+
+template <typename Type>
+Type* Array<Type>::end() { return data + size; }
+
+template <typename Type>
+const Type* Array<Type>::end() const { return data + size; }
+
+template <typename Type>
 void Array<Type>::resize(std::size_t new_size) {
+    if(new_size == size) { return; }
+
     if(new_size > 0) {
         Type* temp = data;
         data = new Type[new_size];
@@ -202,16 +237,17 @@ void Array<Type>::resize(std::size_t new_size) {
 }
 
 template <typename Type>
-bool Array<Type>::empty() const { return size == 0; }
+void Array<Type>::fill(const Type& value) {
+    for(std::size_t i = 0 ; i < size ; ++i) { data[i] = value; }
+}
 
 template <typename Type>
-Type* Array<Type>::begin() { return data; }
+void Array<Type>::assign(std::size_t new_size, const Type& value) {
+    if(new_size != size) {
+        delete[] data;
+        size = new_size;
+        data = new Type[size];
+    }
 
-template <typename Type>
-const Type* Array<Type>::begin() const { return data; }
-
-template <typename Type>
-Type* Array<Type>::end() { return data + size; }
-
-template <typename Type>
-const Type* Array<Type>::end() const { return data + size; }
+    fill(value);
+}
