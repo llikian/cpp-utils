@@ -19,6 +19,7 @@ set(SOURCES
 
         # Template Classes
         include/Array.hpp
+        include/Array2D.hpp
 
         # Other Sources
 
