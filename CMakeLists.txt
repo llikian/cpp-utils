@@ -15,7 +15,7 @@ set(SOURCES
         src/main.cpp
 
         # Classes
-
+        src/Image.cpp
 
         # Template Classes
         include/Array.hpp
@@ -29,14 +29,15 @@ set(SOURCES
 
 
         # Libraries
-
+        lib/stb/stb_image.cpp
+        lib/stb/stb_image_write.cpp
 )
 
 set(INCLUDES
         include
 
         # Libraries
-
+        lib/stb
 )
 
 set(LIBRARIES
