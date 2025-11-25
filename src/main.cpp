@@ -6,6 +6,8 @@
 #include <iostream>
 #include <stdexcept>
 #include "Array2D.hpp"
+#include "Random.hpp"
+#include "vec.hpp"
 
 int main() {
     try {
@@ -27,6 +29,12 @@ int main() {
         std::cout << a3 << '\n';
         a3.resize(4, 4);
         std::cout << a3 << '\n';
+
+        std::cout << '\n';
+        for(int i = 0 ; i < 10 ; ++i) {
+            std::cout << Random::real3(0.0f, 10.0f) << '\n';
+            std::cout << Random::real3(vec3(1.0f, 3.0f, 5.0f), vec3(2.0f, 4.0f, 6.0f)) << '\n';
+        }
 
     } catch(const std::exception& exception) {
         std::cerr << "ERROR : " << exception.what() << '\n';
