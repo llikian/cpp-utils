@@ -4,18 +4,13 @@ This repository aims to group in one place all the common C++ classes, structs &
 often re-use in different projects.
 
 ## To-Do
-- [ ] Vector2, Vector3, Vector4
 - [ ] Matrix2, Matrix3, Matrix4
-- [ ] Image
 - [ ] ansi
-- [ ] constants
-- [ ] geometry
 - [ ] Color
 - [ ] HSL
-- [ ] Image
 - [ ] LifetimeLogger
-- [ ] quaternion
-- [ ] Random
+- [ ] constants
+- [ ] geometry
 - [ ] trigonometry
 
 ## Setup
