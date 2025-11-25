@@ -141,7 +141,7 @@ public:
      */
     void assign(std::size_t new_height, std::size_t new_width, const Type& value);
 
-private:
+protected:
     std::size_t height;      ///< Number of rows in the array.
     std::size_t width;       ///< Number of columns in the array.
     Array<Array<Type>> data; ///< Pointer to heap-allocated data.

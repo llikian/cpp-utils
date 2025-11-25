@@ -137,7 +137,7 @@ public:
      */
     void assign(std::size_t new_size, const Type& value);
 
-private:
+protected:
     std::size_t size; ///< Number of elements in the array.
     Type* data;       ///< Pointer to heap-allocated data.
 };
