@@ -9,7 +9,7 @@
 
 /**
  * @class Timer
- * @brief
+ * @brief A minimul timer class that allows to measure elapsed time.
  */
 class Timer {
 public:
