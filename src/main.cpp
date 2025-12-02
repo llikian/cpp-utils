@@ -5,8 +5,12 @@
 
 #include <iostream>
 #include <stdexcept>
+#include <unistd.h>
+
 #include "Array2D.hpp"
 #include "Random.hpp"
+#include "Timer.hpp"
+#include "utility.hpp"
 #include "vec.hpp"
 
 int main() {
@@ -35,6 +39,23 @@ int main() {
             std::cout << Random::real3(0.0f, 10.0f) << '\n';
             std::cout << Random::real3(vec3(1.0f, 3.0f, 5.0f), vec3(2.0f, 4.0f, 6.0f)) << '\n';
         }
+
+        std::cout << '\n';
+        std::cout << to_bitset(1024) << '\n';
+        std::cout << to_bitset(2.523f) << '\n';
+
+        std::cout << '\n';
+        Timer timer;
+        sleep(1);
+        std::cout << "Timer: " << timer.elapsed_time() << "s\n";
+        timer.pause();
+        sleep(1);
+        std::cout << "Timer: " << timer.elapsed_time() << "s\n";
+        timer.unpause();
+        sleep(1);
+        std::cout << "Timer: " << timer.elapsed_time() << "s\n";
+        timer.reset();
+        std::cout << "Timer: " << timer.elapsed_time() << "s\n";
 
     } catch(const std::exception& exception) {
         std::cerr << "ERROR : " << exception.what() << '\n';

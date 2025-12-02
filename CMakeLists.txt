@@ -28,6 +28,7 @@ set(SOURCES
         include/Random.hpp
 
         # Other Sources
+        src/utility.cpp
 
         # Libraries
         lib/stb/stb_image.cpp
