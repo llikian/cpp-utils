@@ -16,6 +16,7 @@ set(SOURCES
 
         # Classes
         src/Image.cpp
+        src/Timer.cpp
 
         # Template Classes
         include/Array.hpp
@@ -27,7 +28,6 @@ set(SOURCES
         include/Random.hpp
 
         # Other Sources
-
 
         # Libraries
         lib/stb/stb_image.cpp
