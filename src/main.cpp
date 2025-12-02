@@ -35,10 +35,16 @@ int main() {
         std::cout << a3 << '\n';
 
         std::cout << '\n';
+        Array<int> array(10);
         for(int i = 0 ; i < 10 ; ++i) {
             std::cout << Random::real3(0.0f, 10.0f) << '\n';
             std::cout << Random::real3(vec3(1.0f, 3.0f, 5.0f), vec3(2.0f, 4.0f, 6.0f)) << '\n';
+            array[i] = Random::integer(-100, 100);
         }
+
+        std::cout << "array: " << array << '\n';
+        std::sort(array.begin(), array.end());
+        std::cout << "array: " << array << '\n';
 
         std::cout << '\n';
         std::cout << to_bitset(1024) << '\n';
